@@ -49,7 +49,7 @@ for fileid in reuters.fileids():
   file_no += 1
 
 for token in doc_freq:
-  term_freq[token] = [numpy.mean(doc_freq[token].values())]
+  term_freq[token] = numpy.mean(doc_freq[token].values())
 
 with open('term-freq.txt', 'w') as outfile:
   json.dump(term_freq, outfile)

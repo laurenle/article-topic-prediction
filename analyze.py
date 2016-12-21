@@ -5,6 +5,8 @@ import os.path
 import json
 from nltk.corpus import stopwords
 
+max_words_returned = 20
+
 # retrieve pre-processed term frequency data
 with open('term-freq.txt') as json_data:
     tf = json.load(json_data)
@@ -37,14 +39,17 @@ for dir, subdirs, files in os.walk(input_dir):
     words = [word for word in words if word not in all_stopwords]
 
     # use nltk to calculate document frequency
-    df = nltk.FreqDist(words)
+    word_freq = nltk.FreqDist(words)
 
-
+    idf = {}
+    for word, freq in word_freq.most_common(max_words_returned):
+        idf[word] = float(freq) / float(len(words))
 
     print "-----------------------------------"
     print input_file
 
-    # Output top 50 words
-    for word, frequency in df.most_common(10):
+    # Output top 20 words
+    for word in idf:
         if word in tf:
-            print(u'{};{};{}'.format(word, frequency, tf[word]))
+            print(u'{}; {}'.format(word,
+                float(tf[word]) / idf[word]))
