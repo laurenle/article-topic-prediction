@@ -20,8 +20,8 @@ def pad_missing_values(X, Y):
 Compute the cosine similarity of two TF-IDF vectors
 '''
 def cosine_similarity(X, Y):
-  padded_vectors = pad_missing_values(X, Y)
   # vectorize x and y
+  padded_vectors = pad_missing_values(X, Y)
   vx = padded_vectors[0]
   vy = padded_vectors[1]
   sum_vxvy = 0.0
@@ -39,5 +39,6 @@ def cosine_similarity(X, Y):
 Given a matrix of values, print it appropriately
 '''
 def print_matrix(A):
-  # TODO
-  return
+  n = len(A)
+  for row in range(n):
+    print str(A[row]).strip('[]')

@@ -1,5 +1,6 @@
 import nltk
 from nltk.corpus import stopwords
+from vector_operations import *
 
 max_words_returned = 30
 
@@ -25,6 +26,22 @@ def get_tf_idf(tf, idf):
     if word in idf:
         tf_idf[word] = tf[word] * idf[word]
   return tf_idf
+
+'''
+Given a matrix, compute the cosine similarity
+for every pair of vectors and return as a matrix.
+'''
+def get_similarity_matrix(A):
+  # Define matrix size
+  n = len(A)
+  similarity = [[0 for x in range(n)] for y in range(n)]
+  for v1 in range(n):
+    for v2 in range(n):
+      if v1 == v2:
+        similarity[v1][v2] = 1.00
+      else:
+        similarity[v1][v2] = round(cosine_similarity(A[v1], A[v2]), 2)
+  return similarity
 
 '''
 Given a list of words, sanitize the list to omit data that

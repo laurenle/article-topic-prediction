@@ -28,13 +28,13 @@ for fileid in reuters.fileids():
   words = nltk.word_tokenize(file)
   words = [word.lower() for word in words]
   word_freq = nltk.FreqDist(words)
-
   for token in word_freq:
-    df[token] += 1 
-  
+    # only increment document frequency once for each file
+    df[token] += 1
   file_no += 1
 
 for token in df:
+  # formula for idf is ln(total num of files / num of files word appears in)
   idf[token] = numpy.log(float(file_no) / float(df[token]))
 
 with open(idf_filename, 'w') as outfile:

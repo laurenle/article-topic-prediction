@@ -24,14 +24,14 @@ for dir, subdirs, files in os.walk(input_dir):
         continue
     input_file = dir + "/" + file
     fp = codecs.open(input_file, 'r', 'UTF-8')
+    # read in file as a list of tokens
     words = nltk.word_tokenize(fp.read())
+    # compute the term frequency for the current file
     tf = get_tf(words)
+    # store one tf_idf vector for every story analyzed
     tf_idf[file_no] = get_tf_idf(tf, idf)
     file_no += 1
 
-i = 2
-while i < file_no:
-    print cosine_similarity(tf_idf[i], tf_idf[i - 2])
-    print cosine_similarity(tf_idf[i], tf_idf[i - 1])
-    i += 3
+similarity = get_similarity_matrix(tf_idf)
+print_matrix(similarity)
 
