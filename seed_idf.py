@@ -11,7 +11,7 @@ will not become bloated with slow connectivity/parsing latency.
 
 # there are lots of files in Reuters
 limit_files_parsed = True
-file_limit = 500
+file_limit = 1000
 idf_filename = 'inverse-doc-freq.txt'
 
 # track file number
