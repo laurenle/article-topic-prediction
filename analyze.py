@@ -12,8 +12,8 @@ input_dir = 'training-data'
 file_no = 0
 tf = {}
 tf_idf = {}
-cap_files_analyzed = True
-max_files = 2
+cap_files_analyzed = False
+max_files = 6
 
 # retrieve pre-processed term frequency data
 with open(df_filename) as json_data:
@@ -38,13 +38,12 @@ for dir, subdirs, files in os.walk(input_dir):
     # compute the term frequency for the current file
     tf[file_no] = get_tf(words)
     # use words parsed to update idf vector
-    # df = update_df(df, words)
+    df = update_df(df, words)
     # store one tf_idf vector for every story analyzed
     file_no += 1
 
 for i in range(file_no):
-    # tf_idf[i] = get_tf_idf(tf[i], df, docs_analyzed + file_no)
-    tf_idf[i] = get_tf_idf(tf[i], df, docs_analyzed)
+    tf_idf[i] = get_tf_idf(tf[i], df, docs_analyzed + file_no)
 
 similarity = get_similarity_matrix(tf_idf)
 print_matrix(similarity)
