@@ -3,6 +3,7 @@ import nltk
 import numpy
 from nltk.corpus import reuters
 from collections import defaultdict
+from text_analysis import *
 
 '''
 Parse reuters corpus once so that subsequent calls to analyze.py
@@ -26,8 +27,8 @@ for fileid in reuters.fileids():
 
   file = reuters.raw(fileid)
   words = nltk.word_tokenize(file)
-  words = [word.lower() for word in words]
-  word_freq = nltk.FreqDist(words)
+  sanitized_words = sanitize_tokens(words)
+  word_freq = nltk.FreqDist(sanitized_words)
   for token in word_freq:
     # only increment document frequency once for each file
     df[token] += 1

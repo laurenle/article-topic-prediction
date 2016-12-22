@@ -1,8 +1,9 @@
 import nltk
 from nltk.corpus import stopwords
+from nltk.corpus import wordnet as wn
 from vector_operations import *
 
-max_words_returned = 30
+max_words_returned = 100
 
 '''
 Given a list of words, output the term frequency
@@ -24,7 +25,7 @@ def get_tf_idf(tf, idf):
   tf_idf = {}
   for word in tf:
     if word in idf:
-        tf_idf[word] = tf[word] * idf[word]
+      tf_idf[word] = tf[word] * idf[word]
   return tf_idf
 
 '''
@@ -38,9 +39,9 @@ def get_similarity_matrix(A):
   for v1 in range(n):
     for v2 in range(n):
       if v1 == v2:
-        similarity[v1][v2] = 1.00
+        similarity[v1][v2] = 1.0
       else:
-        similarity[v1][v2] = round(cosine_similarity(A[v1], A[v2]), 2)
+        similarity[v1][v2] = round(cosine_similarity(A[v1], A[v2]), 1)
   return similarity
 
 '''
@@ -56,4 +57,6 @@ def sanitize_tokens(words):
       and word not in all_stopwords]
   # remove single-character tokens (mostly punctuation)
   words = [word for word in words if len(word) > 2]
+  # reduce each word to morphological root
+  words = [wn.morphy(word) for word in words]
   return words

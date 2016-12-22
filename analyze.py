@@ -30,6 +30,7 @@ for dir, subdirs, files in os.walk(input_dir):
     tf = get_tf(words)
     # store one tf_idf vector for every story analyzed
     tf_idf[file_no] = get_tf_idf(tf, idf)
+    print input_file
     file_no += 1
 
 similarity = get_similarity_matrix(tf_idf)
