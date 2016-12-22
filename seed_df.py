@@ -13,7 +13,7 @@ will not become bloated with slow connectivity/parsing latency.
 # there are lots of files in Reuters
 limit_files_parsed = True
 file_limit = 1000
-idf_filename = 'inverse-doc-freq.txt'
+idf_filename = 'doc-freq.txt'
 
 # track file number
 file_no = 0
@@ -34,12 +34,8 @@ for fileid in reuters.fileids():
     df[token] += 1
   file_no += 1
 
-for token in df:
-  # formula for idf is ln(total num of files / num of files word appears in)
-  idf[token] = numpy.log(float(file_no) / float(df[token]))
-
 # store the number of documents analyzed and the idf vector
-idf_data = (file_no, idf)
+idf_data = (file_no, df)
 
 with open(idf_filename, 'w') as outfile:
   json.dump(idf_data, outfile)

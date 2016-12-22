@@ -7,21 +7,22 @@ from collections import defaultdict
 from vector_operations import *
 from text_analysis import *
 
-idf_filename = 'inverse-doc-freq.txt'
+df_filename = 'doc-freq.txt'
 input_dir = 'training-data'
 file_no = 0
+tf = {}
 tf_idf = {}
 cap_files_analyzed = True
-max_files = 6
+max_files = 2
 
 # retrieve pre-processed term frequency data
-with open(idf_filename) as json_data:
-    idf_data = json.load(json_data)
+with open(df_filename) as json_data:
+    df_data = json.load(json_data)
     json_data.close()
 
 # extract idf vector and number of documents analyzed from JSON
-idf_docs_analyzed = idf_data[0]
-idf = idf_data[1]
+docs_analyzed = df_data[0]
+df = df_data[1]
 
 for dir, subdirs, files in os.walk(input_dir):
   for file in files:
@@ -35,11 +36,15 @@ for dir, subdirs, files in os.walk(input_dir):
     # read in file as a list of tokens
     words = nltk.word_tokenize(fp.read())
     # compute the term frequency for the current file
-    tf = get_tf(words)
+    tf[file_no] = get_tf(words)
+    # use words parsed to update idf vector
+    # df = update_df(df, words)
     # store one tf_idf vector for every story analyzed
-    tf_idf[file_no] = get_tf_idf(tf, idf)
-    print input_file
     file_no += 1
+
+for i in range(file_no):
+    # tf_idf[i] = get_tf_idf(tf[i], df, docs_analyzed + file_no)
+    tf_idf[i] = get_tf_idf(tf[i], df, docs_analyzed)
 
 similarity = get_similarity_matrix(tf_idf)
 print_matrix(similarity)
