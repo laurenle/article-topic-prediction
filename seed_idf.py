@@ -3,7 +3,7 @@ import nltk
 import numpy
 from nltk.corpus import reuters
 from collections import defaultdict
-from text_analysis import *
+from text_analysis import sanitize_tokens
 
 '''
 Parse reuters corpus once so that subsequent calls to analyze.py
@@ -38,5 +38,8 @@ for token in df:
   # formula for idf is ln(total num of files / num of files word appears in)
   idf[token] = numpy.log(float(file_no) / float(df[token]))
 
+# store the number of documents analyzed and the idf vector
+idf_data = (file_no, idf)
+
 with open(idf_filename, 'w') as outfile:
-  json.dump(idf, outfile)
+  json.dump(idf_data, outfile)

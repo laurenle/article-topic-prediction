@@ -11,14 +11,22 @@ idf_filename = 'inverse-doc-freq.txt'
 input_dir = 'training-data'
 file_no = 0
 tf_idf = {}
+cap_files_analyzed = True
+max_files = 6
 
 # retrieve pre-processed term frequency data
 with open(idf_filename) as json_data:
-    idf = json.load(json_data)
+    idf_data = json.load(json_data)
     json_data.close()
+
+# extract idf vector and number of documents analyzed from JSON
+idf_docs_analyzed = idf_data[0]
+idf = idf_data[1]
 
 for dir, subdirs, files in os.walk(input_dir):
   for file in files:
+    if cap_files_analyzed and file_no >= max_files:
+        break
     # ignore hidden files
     if file[0] == '.':
         continue
